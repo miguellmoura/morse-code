@@ -33,6 +33,7 @@ public class TreeVisualizer extends Application {
 
         public MorseBST() {
             this.root = new Node(' ');
+            decode_morse(this.root, "--- .-.. .- / . ..- / ... --- ..- / --- / -- .. --. ..- . .-..");
 
             insert('E', ".", this.root);
             insert('A', ".-", this.root);
@@ -81,6 +82,34 @@ public class TreeVisualizer extends Application {
 
                 insert(letter, morseCodeNew.toString(), node.right);
             }
+            
+        public char morse_to_char(Node root, char[] sequence, int i) {
+            if (i == sequence.length) {
+                return root.letter;
+            } else if (String.valueOf(sequence[i]).equals(".")) {
+                return morse_to_char(root.left, sequence, i+1);
+            } else {
+                return morse_to_char(root.right, sequence, i+1);
+            }
+        }
+
+        public String decode_morse (Node root, String str) {
+            String decoded = "";
+            String[] sequences = str.split(" ");
+            for (String sequence :  sequences) {
+                if (sequence.equals("/")) {
+                    decoded += " ";
+                } else {
+                    char[] sequencesChar = new char[sequences.length];
+                    for (int i = 0; i < sequences.length; i++) {
+                        sequencesChar[i] = sequences[i].charAt(i);
+                    }
+                    decoded += morse_to_char(root, sequencesChar, 0);
+                }
+            }
+
+            return decoded;
+        }   
 
 
         }
